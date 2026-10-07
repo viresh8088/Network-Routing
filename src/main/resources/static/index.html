@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Network Routing Simulator</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
+
+<header class="topbar">
+
+    <button
+        class="menu-button"
+        id="menuBtn">
+
+        <i class="fa-solid fa-bars"></i>
+
+    </button>
+
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            <i class="fa-solid fa-route"></i>
+        </div>
+
+        <div>
+
+            <strong>
+                Network Routing Simulator
+            </strong>
+
+            <span>
+                Network Analysis Platform
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+        <button
+            class="theme-toggle"
+            id="themeToggle"
+            onclick="toggleTheme()"
+            title="Toggle dark mode">
+
+            <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+        <div class="system-status" id="systemStatus">
+
+            <span class="status-dot healthy"></span>
+
+            <span id="systemStatusText">Network Healthy</span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<div class="app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar">
+
+
+        <div class="sidebar-heading">
+            MAIN MENU
+        </div>
+
+
+        <nav class="navigation">
+
+
+            <button
+                class="nav-item active"
+                data-page="dashboard"
+                onclick="showPage('dashboard')">
+
+                <i class="fa-solid fa-house"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="add-edge"
+                onclick="showPage('add-edge')">
+
+                <i class="fa-solid fa-circle-plus"></i>
+
+                <span>
+                    Add Node / Edge
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="graph"
+                onclick="showPage('graph')">
+
+                <i class="fa-solid fa-diagram-project"></i>
+
+                <span>
+                    View Graph
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="shortest-path"
+                onclick="showPage('shortest-path')">
+
+                <i class="fa-solid fa-route"></i>
+
+                <span>
+                    Find Shortest Path
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="traffic"
+                onclick="showPage('traffic')">
+
+                <i class="fa-solid fa-traffic-light"></i>
+
+                <span>
+                    Traffic Simulation
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="failure"
+                onclick="showPage('failure')">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                <span>
+                    Failure &amp; Rerouting
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="autopilot"
+                onclick="showPage('autopilot')">
+
+                <i class="fa-solid fa-satellite-dish"></i>
+
+                <span>
+                    Autopilot &amp; Scenarios
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="analytics"
+                onclick="showPage('analytics')">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>
+                    Analytics
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="history"
+                onclick="showPage('history')">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                <span>
+                    Routing History
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="saved"
+                onclick="showPage('saved')">
+
+                <i class="fa-solid fa-folder-open"></i>
+
+                <span>
+                    Saved Graphs
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="about"
+                onclick="showPage('about')">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    About
+                </span>
+
+            </button>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="algorithm-card">
+
+                <div class="algorithm-icon">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                </div>
+
+                <div class="algorithm-select">
+
+                    <span class="algorithm-label">Routing Engine</span>
+
+                    <select id="globalAlgorithm" onchange="onAlgorithmChange()">
+
+                        <option value="DIJKSTRA">Dijkstra</option>
+
+                        <option value="BFS">BFS</option>
+
+                        <option value="BELLMAN_FORD">Bellman-Ford</option>
+
+                        <option value="A_STAR">A*</option>
+
+                        <option value="FLOYD_WARSHALL">Floyd-Warshall</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            class="page active"
+            id="dashboard">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        NETWORK MANAGEMENT
+                    </span>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    <p>
+                        Build, visualize and analyze your routing network.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn primary"
+                    onclick="showPage('add-edge')">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Network Edge
+
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= STATISTICS ================= -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+
+                        <i class="fa-solid fa-circle-nodes"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Nodes
+                        </span>
+
+                        <strong id="nodeCount">
+                            4
+                        </strong>
+
+                        <small>
+                            Active network nodes
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon purple">
+
+                        <i class="fa-solid fa-share-nodes"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Edges
+                        </span>
+
+                        <strong id="edgeCount">
+                            5
+                        </strong>
+
+                        <small>
+                            Network connections
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-solid fa-route"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Paths Calculated
+                        </span>
+
+                        <strong id="pathCount">
+                            0
+                        </strong>
+
+                        <small>
+                            Dijkstra calculations
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+
+                        <i class="fa-solid fa-database"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Saved Graphs
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
+                        <small>
+                            Database storage
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= DASHBOARD BODY ================= -->
+
+            <div class="dashboard-layout">
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Network Overview
+                            </h2>
+
+                            <p>
+                                Current network topology
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="btn secondary small"
+                            onclick="showPage('graph')">
+
+                            View Full Graph
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="graph-preview">
+
+                        <svg
+                            id="dashboardGraph"
+                            viewBox="0 0 700 380">
+                        </svg>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card activity-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Manage your network
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="showPage('add-edge')">
+
+                        <span class="quick-icon purple-bg">
+
+                            <i class="fa-solid fa-circle-plus"></i>
+
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Add Node / Edge
+                            </strong>
+
+                            <small>
+                                Build your network
+                            </small>
+
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </button>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="showPage('graph')">
+
+                        <span class="quick-icon blue-bg">
+
+                            <i class="fa-solid fa-diagram-project"></i>
+
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                View Graph
+                            </strong>
+
+                            <small>
+                                Visualize connections
+                            </small>
+
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </button>
+
+
+                    <button
+                        class="quick-action"
+                        onclick="showPage('shortest-path')">
+
+                        <span class="quick-icon green-bg">
+
+                            <i class="fa-solid fa-route"></i>
+
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Find Shortest Path
+                            </strong>
+
+                            <small>
+                                Run Dijkstra algorithm
+                            </small>
+
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADD NODE / EDGE
+        ================================================== -->
+
+        <section
+            class="page"
+            id="add-edge">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        NETWORK BUILDER
+                    </span>
+
+                    <h1>
+                        Add Node / Edge
+                    </h1>
+
+                    <p>
+                        Create nodes and connect them with weighted edges.
+                    </p>
+
+                </div>
+
+
+                <div class="builder-toolbar">
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="directedToggle"
+                            checked
+                            onchange="toggleDirected()">
+
+                        <span class="slider"></span>
+
+                        <span class="switch-label" id="directedLabel">Directed</span>
+
+                    </label>
+
+                    <select id="templateSelect" onchange="loadTemplate(this.value)">
+
+                        <option value="">Load Example Network…</option>
+
+                        <option value="small">Small Network</option>
+
+                        <option value="campus">Campus Network</option>
+
+                        <option value="datacenter">Data Center</option>
+
+                    </select>
+
+                    <button
+                        class="btn secondary small"
+                        onclick="document.getElementById('importFile').click()">
+
+                        <i class="fa-solid fa-upload"></i>
+
+                        Import
+
+                    </button>
+
+                    <button
+                        class="btn secondary small"
+                        onclick="exportNetwork()">
+
+                        <i class="fa-solid fa-download"></i>
+
+                        Export
+
+                    </button>
+
+                    <input
+                        type="file"
+                        id="importFile"
+                        accept="application/json"
+                        style="display:none;"
+                        onchange="importNetwork(event)">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= NODE BUILDER ================= -->
+
+            <div class="card node-builder-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Network Nodes
+                        </h2>
+
+                        <p>
+                            Add independent nodes to your network.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        class="badge"
+                        id="nodeBadge">
+
+                        4 Nodes
+
+                    </span>
+
+                </div>
+
+
+                <div class="node-builder">
+
+
+                    <div class="form-group">
+
+                        <label for="newNodeName">
+                            Node Name
+                        </label>
+
+
+                        <div class="input-row">
+
+                            <input
+                                id="newNodeName"
+                                type="text"
+                                maxlength="20"
+                                placeholder="Example: E">
+
+                            <button
+                                class="btn primary"
+                                onclick="addNode()">
+
+                                <i class="fa-solid fa-plus"></i>
+
+                                Add Node
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <label class="field-label">
+                            Available Nodes
+                        </label>
+
+
+                        <div
+                            id="nodeList"
+                            class="node-list">
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div
+                    id="nodeMessage"
+                    class="message hidden">
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= EDGE FORM ================= -->
+
+            <div class="two-column">
+
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Create Connection
+                            </h2>
+
+                            <p>
+                                Add a weighted directed edge.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="edgeSource">
+                            Source Node
+                        </label>
+
+                        <select id="edgeSource">
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="edgeDestination">
+                            Destination Node
+                        </label>
+
+                        <select id="edgeDestination">
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="edgeWeight">
+                            Edge Weight (Base Cost)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="edgeWeight"
+                            min="0"
+                            step="1"
+                            placeholder="Example: 5">
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="edgeLatency">
+                                Latency (ms)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="edgeLatency"
+                                min="0"
+                                step="1"
+                                value="0">
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="edgeCapacity">
+                                Capacity (Mbps)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="edgeCapacity"
+                                min="1"
+                                step="1"
+                                value="100">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="edgeTraffic">
+                            Initial Traffic Level
+                        </label>
+
+                        <select id="edgeTraffic">
+
+                            <option value="LOW">Low</option>
+
+                            <option value="MEDIUM">Medium</option>
+
+                            <option value="HIGH">High</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="btn primary full"
+                        onclick="addEdge()">
+
+                        <i class="fa-solid fa-link"></i>
+
+                        Add Edge
+
+                    </button>
+
+
+                    <div
+                        id="edgeMessage"
+                        class="message hidden">
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ================= EDGE TABLE ================= -->
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Current Edges
+                            </h2>
+
+                            <p>
+                                Active network connections.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-scroll">
+
+                        <table>
+
+                            <thead>
+
+                            <tr>
+
+                                <th>
+                                    Source
+                                </th>
+
+                                <th>
+                                    Destination
+                                </th>
+
+                                <th>
+                                    Weight
+                                </th>
+
+                                <th>
+                                    Latency
+                                </th>
+
+                                <th>
+                                    Traffic
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                            </thead>
+
+
+                            <tbody id="edgeTableBody">
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             GRAPH
+        ================================================== -->
+
+        <section
+            class="page"
+            id="graph">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        VISUALIZATION
+                    </span>
+
+                    <h1>
+                        Network Graph
+                    </h1>
+
+                    <p>
+                        Visual representation of your network topology.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="renderNetworkGraph()">
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Refresh Graph
+
+                </button>
+
+            </div>
+
+
+
+            <div class="card graph-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Interactive Network
+                        </h2>
+
+                        <p>
+                            Nodes with weighted connections.
+                        </p>
+
+                    </div>
+
+
+                    <div class="graph-legend">
+
+                        <span>
+                            <i class="legend-node"></i>
+                            Node
+                        </span>
+
+                        <span>
+                            <i class="legend-line"></i>
+                            Edge
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="large-graph">
+
+                    <svg
+                        id="networkGraph"
+                        viewBox="0 0 1000 600">
+                    </svg>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SHORTEST PATH
+        ================================================== -->
+
+        <section
+            class="page"
+            id="shortest-path">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        ROUTING ENGINE
+                    </span>
+
+                    <h1>
+                        Find Shortest Path
+                    </h1>
+
+                    <p>
+                        Calculate the minimum-cost route between two nodes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="two-column">
+
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Route Selection
+                            </h2>
+
+                            <p>
+                                Select your source and destination.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="source">
+                            Source Node
+                        </label>
+
+                        <select id="source">
+                        </select>
+
+                    </div>
+
+
+                    <div class="route-arrow">
+
+                        <i class="fa-solid fa-arrow-down"></i>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="destination">
+                            Destination Node
+                        </label>
+
+                        <select id="destination">
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="btn primary full"
+                        onclick="findPath()"
+                        id="findPathBtn">
+
+                        <i class="fa-solid fa-route"></i>
+
+                        Find Shortest Path
+
+                    </button>
+
+
+                    <div class="route-controls">
+
+                        <div class="anim-buttons">
+
+                            <button
+                                class="ctrl-btn"
+                                onclick="startAnimation()"
+                                title="Play">
+
+                                <i class="fa-solid fa-play"></i>
+
+                            </button>
+
+                            <button
+                                class="ctrl-btn"
+                                onclick="pauseAnimation()"
+                                title="Pause">
+
+                                <i class="fa-solid fa-pause"></i>
+
+                            </button>
+
+                            <button
+                                class="ctrl-btn"
+                                onclick="stepAnimation()"
+                                title="Next Step">
+
+                                <i class="fa-solid fa-forward-step"></i>
+
+                            </button>
+
+                            <button
+                                class="ctrl-btn"
+                                onclick="resetAnimation()"
+                                title="Reset">
+
+                                <i class="fa-solid fa-rotate-left"></i>
+
+                            </button>
+
+                        </div>
+
+                        <div class="step-counter" id="stepCounter">
+                            Step 0 / 0
+                        </div>
+
+                    </div>
+
+
+                    <div class="anim-status" id="animStatus">
+                        Run a route to enable step-by-step animation.
+                    </div>
+
+
+                    <button
+                        class="btn secondary full"
+                        onclick="compareAlgorithms()">
+
+                        <i class="fa-solid fa-scale-balanced"></i>
+
+                        Compare All Algorithms
+
+                    </button>
+
+
+                    <div class="algorithm-info">
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        <div>
+
+                            <strong id="algoInfoName">
+                                Dijkstra's Algorithm
+                            </strong>
+
+                            <span id="algoInfoDesc">
+                                Finds the minimum-cost route.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Shortest Path Result
+                            </h2>
+
+                            <p>
+                                Your calculated route.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="result"
+                        class="result empty">
+
+                        <div class="result-icon">
+
+                            <i class="fa-solid fa-route"></i>
+
+                        </div>
+
+                        <h3>
+                            Ready to Calculate
+                        </h3>
+
+                        <p>
+                            Select two nodes and run the algorithm.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="card route-graph-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Route Visualization
+                        </h2>
+
+                        <p>
+                            Shortest route highlighted in the graph.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="route-graph">
+
+                    <svg
+                        id="routeGraph"
+                        viewBox="0 0 900 500">
+                    </svg>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============== INTELLIGENT ROUTE DECISION =============== -->
+
+            <div class="card decision-card hidden" id="decisionCard">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            🧠 Route Decision
+                        </h2>
+
+                        <p>
+                            Why the engine selected this route.
+                        </p>
+
+                    </div>
+
+                    <span class="badge" id="decisionTrafficBadge">NORMAL</span>
+
+                </div>
+
+                <div class="decision-body">
+
+                    <div class="decision-factors">
+
+                        <h4>Factors considered</h4>
+                        <ul id="decisionFactors"></ul>
+
+                    </div>
+
+                    <div class="decision-reasons">
+
+                        <h4>Selection reasoning</h4>
+                        <ul id="decisionReasons"></ul>
+
+                    </div>
+
+                    <div class="decision-metrics" id="decisionMetrics"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card compare-card hidden" id="compareCard">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Algorithm Comparison
+                        </h2>
+
+                        <p>
+                            Same route computed with every algorithm.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Path</th>
+                                <th>Cost</th>
+                                <th>Hops</th>
+                                <th>Nodes Visited</th>
+                                <th>Time</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="compareTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             TRAFFIC SIMULATION
+        ================================================== -->
+
+        <section
+            class="page"
+            id="traffic">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        REAL-TIME TRAFFIC
+                    </span>
+
+                    <h1>
+                        Traffic Simulation
+                    </h1>
+
+                    <p>
+                        Congestion changes edge costs and reroutes traffic.
+                    </p>
+
+                </div>
+
+
+                <div class="traffic-toggle">
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="useTrafficToggle"
+                            onchange="toggleTrafficMode()">
+
+                        <span class="slider"></span>
+
+                        <span class="switch-label">Traffic-Aware Routing</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Link Traffic
+                        </h2>
+
+                        <p>
+                            Set congestion per link. Current Cost = Base + Traffic Penalty + Latency.
+                        </p>
+
+                    </div>
+
+                    <div class="legend-row">
+
+                        <span class="traffic-badge low">Low</span>
+                        <span class="traffic-badge medium">Medium</span>
+                        <span class="traffic-badge high">High</span>
+
+                    </div>
+
+                </div>
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Link</th>
+                                <th>Base</th>
+                                <th>Latency</th>
+                                <th>Traffic</th>
+                                <th>Current Cost</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="trafficTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="traffic-actions">
+
+                    <button
+                        class="btn secondary"
+                        onclick="randomizeTraffic()">
+
+                        <i class="fa-solid fa-shuffle"></i>
+
+                        Simulate Random Traffic
+
+                    </button>
+
+                    <button
+                        class="btn primary"
+                        onclick="findPath()">
+
+                        <i class="fa-solid fa-route"></i>
+
+                        Recalculate Route
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FAILURE &amp; ROUTING
+        ================================================== -->
+
+        <section
+            class="page"
+            id="failure">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        FAULT TOLERANCE
+                    </span>
+
+                    <h1>
+                        Failure &amp; Rerouting
+                    </h1>
+
+                    <p>
+                        Disable a node or link and recalculate an alternate route.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="two-column">
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>Nodes</h2>
+
+                            <p>Click to toggle failure.</p>
+
+                        </div>
+
+                    </div>
+
+                    <div id="failureNodeList" class="failure-list"></div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>Links</h2>
+
+                            <p>Click to toggle link failure.</p>
+
+                        </div>
+
+                    </div>
+
+                    <div id="failureEdgeList" class="failure-list"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card reroute-card">
+
+                <div class="reroute-alert hidden" id="rerouteAlert">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <span id="rerouteAlertText"></span>
+
+                </div>
+
+                <div class="traffic-actions">
+
+                    <button
+                        class="btn secondary"
+                        onclick="clearFailures()">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                        Restore All
+
+                    </button>
+
+                    <button
+                        class="btn primary"
+                        onclick="recalculateAfterFailure()">
+
+                        <i class="fa-solid fa-arrows-rotate"></i>
+
+                        Recalculate Route
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             AUTOPILOT & SCENARIOS
+        ================================================== -->
+
+        <section
+            class="page"
+            id="autopilot">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        AUTONOMOUS CONTROL
+                    </span>
+
+                    <h1>
+                        Autopilot &amp; Demo Scenarios
+                    </h1>
+
+                    <p>
+                        One-click network states with live automatic rerouting.
+                    </p>
+
+                </div>
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="autoMonitorToggle"
+                        onchange="toggleAutoMonitor()">
+
+                    <span class="slider"></span>
+
+                    <span class="switch-label">Live Monitor</span>
+
+                </label>
+
+            </div>
+
+
+            <!-- =============== DEMO SCENARIOS =============== -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            🧪 One-Click Demo Scenarios
+                        </h2>
+
+                        <p>
+                            Instantly configure the network for a presentation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="scenario-grid" id="scenarioGrid"></div>
+
+            </div>
+
+
+            <!-- =============== REROUTING ENGINE =============== -->
+
+            <div class="card reroute-engine-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            🔄 Automatic Dynamic Rerouting
+                        </h2>
+
+                        <p>
+                            Watch the engine react to congestion and failures in real time.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn primary"
+                        onclick="runMonitorCycle()">
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        Run Watch Cycle
+
+                    </button>
+
+                </div>
+
+                <div class="monitor-console" id="monitorConsole">
+
+                    <div class="console-empty">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        Monitor is idle. Load a scenario and run a watch cycle.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANALYTICS
+        ================================================== -->
+
+        <section
+            class="page"
+            id="analytics">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        PERFORMANCE
+                    </span>
+
+                    <h1>
+                        Network Analytics
+                    </h1>
+
+                    <p>
+                        Live health and performance metrics for your network.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="loadAnalytics()">
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+
+            <div class="health-banner" id="healthBanner">
+
+                <div class="health-left">
+
+                    <span class="health-dot healthy" id="healthDot"></span>
+
+                    <div>
+
+                        <strong id="healthTitle">Network Healthy</strong>
+
+                        <small id="healthMessage">All links operating normally.</small>
+
+                    </div>
+
+                </div>
+
+                <div class="utilization">
+
+                    <span>Network Utilization</span>
+
+                    <div class="util-bar">
+                        <div class="util-fill" id="utilFill"></div>
+                    </div>
+
+                    <strong id="utilText">0%</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid analytics-grid" id="analyticsGrid"></div>
+
+
+            <!-- =============== NETWORK HEALTH SCORE =============== -->
+
+            <div class="card health-score-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Network Health Score</h2>
+
+                        <p>Composite score from failures, congestion, latency and load.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="health-score-body">
+
+                    <div class="health-ring" id="healthRing">
+
+                        <svg viewBox="0 0 120 120">
+
+                            <circle class="ring-track" cx="60" cy="60" r="52"></circle>
+
+                            <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52"></circle>
+
+                        </svg>
+
+                        <div class="ring-label">
+
+                            <strong id="healthScoreValue">--</strong>
+
+                            <span>HEALTH</span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="health-status-text" id="healthStatusText">🟢 Healthy</div>
+
+                    <div class="health-breakdown" id="healthBreakdown"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============== LIVE ANALYTICS CHARTS =============== -->
+
+            <div class="card charts-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>📈 Live Analytics</h2>
+
+                        <p>Network trend over the monitoring session.</p>
+
+                    </div>
+
+                </div>
+
+                <div class="charts-grid">
+
+                    <div class="chart-box">
+                        <h4>Traffic / Utilization</h4>
+                        <canvas id="chartTraffic" width="420" height="160"></canvas>
+                    </div>
+
+                    <div class="chart-box">
+                        <h4>Average Latency (ms)</h4>
+                        <canvas id="chartLatency" width="420" height="160"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card export-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Export Report</h2>
+
+                        <p>Download the current routing &amp; network report.</p>
+
+                    </div>
+
+                    <button
+                        class="btn primary"
+                        onclick="exportReport()">
+
+                        <i class="fa-solid fa-file-arrow-down"></i>
+
+                        Download Report
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             HISTORY
+        ================================================== -->
+
+        <section
+            class="page"
+            id="history">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        ACTIVITY
+                    </span>
+
+                    <h1>
+                        Routing History
+                    </h1>
+
+                    <p>
+                        Previous shortest-path calculations.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="clearHistory()">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    Clear History
+
+                </button>
+
+            </div>
+
+
+
+            <div class="card">
+
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Source
+                            </th>
+
+                            <th>
+                                Destination
+                            </th>
+
+                            <th>
+                                Algorithm
+                            </th>
+
+                            <th>
+                                Path
+                            </th>
+
+                            <th>
+                                Cost
+                            </th>
+
+                            <th>
+                                Condition
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+
+                        <tbody id="historyTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SAVED
+        ================================================== -->
+
+        <section
+            class="page"
+            id="saved">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        STORAGE
+                    </span>
+
+                    <h1>
+                        Saved Graphs
+                    </h1>
+
+                    <p>
+                        Manage saved network configurations.
+                    </p>
+
+                </div>
+
+
+                <div class="save-form">
+
+                    <input
+                        type="text"
+                        id="saveNetworkName"
+                        placeholder="Network name (e.g. College Network)">
+
+                    <button
+                        class="btn primary"
+                        onclick="saveCurrentGraph()">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Graph
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="card saved-list-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>Saved Networks</h2>
+
+                        <p>Stored in MySQL. Click Load to restore.</p>
+
+                    </div>
+
+                </div>
+
+                <div id="savedList" class="saved-list"></div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT
+        ================================================== -->
+
+        <section
+            class="page"
+            id="about">
+
+
+            <div class="page-header">
+
+                <div>
+
+                    <span class="eyebrow">
+                        PROJECT
+                    </span>
+
+                    <h1>
+                        About
+                    </h1>
+
+                    <p>
+                        Network Routing Simulator
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="about-grid">
+
+
+                <div class="card about-card">
+
+                    <div class="about-logo">
+
+                        <i class="fa-solid fa-route"></i>
+
+                    </div>
+
+
+                    <h2>
+                        Network Routing Simulator
+                    </h2>
+
+
+                    <p>
+                        A Java Spring Boot based network simulation
+                        application for creating weighted graphs,
+                        visualizing connections and calculating
+                        shortest paths.
+                    </p>
+
+
+                    <div class="technology-list">
+
+                        <span>Java</span>
+
+                        <span>Spring Boot</span>
+
+                        <span>REST API</span>
+
+                        <span>Dijkstra</span>
+
+                        <span>HTML</span>
+
+                        <span>CSS</span>
+
+                        <span>JavaScript</span>
+
+                        <span>MySQL</span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Workflow
+                            </h2>
+
+                            <p>
+                                How the simulator works.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="workflow">
+
+                        <div>
+                            <b>1</b>
+                            <span>Add Nodes</span>
+                        </div>
+
+                        <div>
+                            <b>2</b>
+                            <span>Create Edges</span>
+                        </div>
+
+                        <div>
+                            <b>3</b>
+                            <span>Visualize Graph</span>
+                        </div>
+
+                        <div>
+                            <b>4</b>
+                            <span>Select Route</span>
+                        </div>
+
+                        <div>
+                            <b>5</b>
+                            <span>Run Dijkstra</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Success
+    </span>
+
+</div>
+
+
+
+<!-- =========================================================
+     NODE DETAIL MODAL
+========================================================= -->
+
+<div class="modal-overlay hidden" id="nodeModal" onclick="closeNodeModal(event)">
+
+    <div class="modal" onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+
+            <h3 id="nodeModalTitle">Node</h3>
+
+            <button class="modal-close" onclick="closeNodeModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <div id="nodeModalBody" class="modal-body"></div>
+
+    </div>
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
